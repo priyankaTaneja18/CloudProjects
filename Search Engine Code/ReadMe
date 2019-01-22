@@ -1,0 +1,104 @@
+The paths and directory names are specific to me. You can use another location as per your account,
+but make sure that it is pointing to the correct input location in case of multiple chain map reduce operations.
+If you want to re-execute, also make sure that the output directory should be deleted.
+
+######################################################################################## 
+DOCWORDCOUNT
+########################################################################################
+
+1. Create an input folder in HDFS, here "/user/ptaneja/asgn2/input"
+2. Put cantrbry files in input folder.
+3. Refer to below commands for DocWordCount
+4. Please note output directory is "/user/ptaneja/DocWordCountA2/output" 
+
+-----------------------------------EXECUTION STEPS--------------------------------------------------
+1. hadoop fs -mkdir /user/ptaneja/asgn2 /user/ptaneja/asgn2/input
+
+2. [cloudera@quickstart ~]$ hadoop fs -put cantrbry/*  /user/ptaneja/asgn2/input
+3. [cloudera@quickstart ~]$ hadoop fs -ls /user/ptaneja/asgn2/input
+Found 8 items
+-rw-r--r--   1 cloudera supergroup     152089 2018-10-04 17:09 /user/ptaneja/asgn2/input/alice29.txt
+-rw-r--r--   1 cloudera supergroup     125179 2018-10-04 17:09 /user/ptaneja/asgn2/input/asyoulik.txt
+-rw-r--r--   1 cloudera supergroup      24603 2018-10-04 17:09 /user/ptaneja/asgn2/input/cp.html
+-rw-r--r--   1 cloudera supergroup      11150 2018-10-04 17:09 /user/ptaneja/asgn2/input/fields.c
+-rw-r--r--   1 cloudera supergroup       3721 2018-10-04 17:09 /user/ptaneja/asgn2/input/grammar.lsp
+-rw-r--r--   1 cloudera supergroup     426754 2018-10-04 17:09 /user/ptaneja/asgn2/input/lcet10.txt
+-rw-r--r--   1 cloudera supergroup     481861 2018-10-04 17:09 /user/ptaneja/asgn2/input/plrabn12.txt
+-rw-r--r--   1 cloudera supergroup       4227 2018-10-04 17:09 /user/ptaneja/asgn2/input/xargs.1
+
+
+4. [cloudera@quickstart ~]$ mkdir -p build
+5. [cloudera@quickstart ~]$ javac -cp /usr/lib/hadoop/*:/usr/lib/hadoop-mapreduce/* assignment2/DocWordCount.java -d build -Xlint
+6. [cloudera@quickstart ~]$ jar -cvf assignment2/docwordcount.jar -C build/ .
+7. [cloudera@quickstart ~]$ jar -cvf assignment2/docwordcount.jar -C build/ .
+8. [cloudera@quickstart ~]$ hadoop jar assignment2/docwordcount.jar org.myorg.DocWordCount /user/ptaneja/asgn2/input /user/ptaneja/DocWordCountA2/output
+9. [cloudera@quickstart ~]$ hadoop fs -cat /user/ptaneja/DocWordCountA2/output/*
+
+
+#############################################################################################
+TERM FREQUENCY
+#############################################################################################
+1. Input folder in HDFS is already created, "/user/ptaneja/asgn2/input" with cantrbry files in that folder.
+2. Refer to below commands for TermFrequency execution
+3. Please note output directory is "/user/ptaneja/TermFrequencyA2/output" 
+		arg[0]----> Input Directory	    = /user/ptaneja/asgn2/input
+		arg[1]----> Output Directory        = /user/ptaneja/TermFrequencyA2/output
+
+-----------------------------------EXECUTION STEPS-----------------------------------------------------
+1. [cloudera@quickstart ~]$ mkdir -p build
+2. [cloudera@quickstart ~]$ javac -cp /usr/lib/hadoop/*:/usr/lib/hadoop-mapreduce/* assignment2/TermFrequency.java -d build -Xlint
+3. [cloudera@quickstart ~]$ jar -cvf assignment2/termfrequency.jar -C build/ .
+4. [cloudera@quickstart ~]$ hadoop jar assignment2/termfrequency.jar org.myorg.TermFrequency /user/ptaneja/asgn2/input /user/ptaneja/TermFrequencyA2/output
+5. [cloudera@quickstart ~]$ hadoop fs -cat /user/ptaneja/TermFrequencyA2/output/*
+##################################################################################################
+
+
+#########################################################################################################
+TFIDF
+##########################################################################################################
+1. Input folder in HDFS is already created, "/user/ptaneja/asgn2/input" with cantrbry files in that folder.
+2. Refer to below commands for TFIDF execution
+3. Please note,  there will be three arguments passed as follows:
+		arg[0]----> Input Directory	    = /user/ptaneja/asgn2/input
+		arg[1]----> Intermediate Directory  = /user/ptaneja/TFIDFA2/temp
+		arg[2]----> OutPut Directory 	    = /user/ptaneja/TFIDFA2/output
+
+----------------------------------Execution Steps---------------------------------------------------------
+1. [cloudera@quickstart ~]$ mkdir -p build
+2. [cloudera@quickstart ~]$ javac -cp /usr/lib/hadoop/*:/usr/lib/hadoop-mapreduce/* assignment2/TFIDF.java -d build -Xlint
+3. [cloudera@quickstart ~]$ jar -cvf assignment2/tfidf.jar -C build/ .
+4. [cloudera@quickstart ~]$ hadoop jar assignment2/tfidf.jar org.myorg.TFIDF /user/ptaneja/asgn2/input /user/ptaneja/TFIDFA2/temp /user/ptaneja/TFIDFA2/output
+5. [cloudera@quickstart ~]$ hadoop fs -cat /user/ptaneja/TFIDFA2/output/*
+6. [cloudera@quickstart ~]$ hadoop fs -copyToLocal /user/ptaneja/TFIDFA2/output A2Solution/
+7. Rename output file
+
+
+#######################################################################################################################
+SEARCH
+######################################################################################################################
+Run this file only after you have successfully executed TFIDF
+1. Input folder in HDFS is already created, "/user/ptaneja/asgn2/input" with cantrbry files in that folder.
+2. Refer to below commands for Search execution
+3. Please note, the input directory for Search will be the output directory of TFIDF
+		arg[0]---> Input directory =
+		arg[1]---> Output directory= 
+		arg[2]---> Search Query    =
+----------------------------------Execution Steps---------------------------------------------------------
+Query 1:
+1. [cloudera@quickstart ~]$ mkdir -p build
+2. [cloudera@quickstart ~]$ javac -cp /usr/lib/hadoop/*:/usr/lib/hadoop-mapreduce/* assignment2/Search.java -d build -Xlint
+3. [cloudera@quickstart ~]$ jar -cvf assignment2/search.jar -C build/ .
+4. [cloudera@quickstart ~]$ hadoop jar assignment2/search.jar org.myorg.Search /user/ptaneja/TFIDFA2/output /user/ptaneja/Search/output "computer science"
+5. [cloudera@quickstart ~]$ hadoop fs -cat /user/ptaneja/Search/output/*
+6. [cloudera@quickstart ~]$ hadoop fs -copyToLocal /user/ptaneja/Search/output A2Solution/
+7. Rename output file
+
+
+Query2:
+
+1. [cloudera@quickstart ~]$ hadoop jar assignment2/search.jar org.myorg.Search /user/ptaneja/TFIDFA2/output /user/ptaneja/Search2/output "data analysis"
+2. [cloudera@quickstart ~]$ hadoop fs -cat /user/ptaneja/Search1/output/*
+3. [cloudera@quickstart ~]$ hadoop fs -copyToLocal /user/ptaneja/Search2/output A2Solution/
+
+
+

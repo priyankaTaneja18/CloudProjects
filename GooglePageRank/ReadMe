@@ -1,0 +1,29 @@
+The paths and directory names are specific to me. You can use another location as per your account,
+but make sure that it is pointing to the correct input location in case of multiple chain map reduce operations.
+
+
+######################################################################################## 
+PageRank-- SIMPLE WIKI PAGE on CloudEra
+########################################################################################
+1. In your cloudera local folder say assignment3 and it should contain input files and 4 java files that should be compiled together as written in step 2  "assignment3/*.java"
+1. Create an input folder in HDFS, here "/user/ptaneja/simple/input"
+2. Put simple wiki xml file in input folder using " hadoop fs -put assignment3/simplewiki.xml /user/cloudera/simple/input ". (I have renamed the input file by simplewiki.xml)
+3. Please make sure intially there should not be temporary folder already existing
+4. Please note, the temp folder will be delete during the cleaning process and output file will be deleted if previously existed before creating the new output directory
+		arg[0]---> Input directory = /user/ptaneja/simple/input
+		arg[1]---> Temporary directory = /user/ptaneja/simple/temp
+		arg[2]---> Output directory = /user/ptaneja/simple/output
+  We only have to run the driver, rest all the execution of subsequent map and reduce will automatically work.
+
+----------------------------------Execution Steps---------------------------------------------------------
+1. [cloudera@quickstart ~]$ mkdir -p build
+2. [cloudera@quickstart ~]$ javac -cp /usr/lib/hadoop/*:/usr/lib/hadoop-mapreduce/* assignment3/*.java -d build -Xlint
+3. [cloudera@quickstart ~]$ jar -cvf assignment3/page.jar -C build/ .
+4. [cloudera@quickstart ~]$ hadoop jar assignment3/page.jar org.myorg.PageRankDriver /user/ptaneja/simple/input /user/ptaneja/simple/temp /user/ptaneja/simple/output 
+5. [cloudera@quickstart ~]$ hadoop fs -cat /user/ptaneja/simple/output/*
+6. [cloudera@quickstart ~]$ hadoop fs -copyToLocal /user/ptaneja/simple/output /home/cloudera/assignment3
+
+
+
+
+
